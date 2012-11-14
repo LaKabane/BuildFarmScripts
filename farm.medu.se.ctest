@@ -4,11 +4,16 @@
 
 # This file should be included from a project specific script
 
+# ------------
+# - Cleaning -
+# ------------
+string(REPLACE "/" "_" CLEANED_GIT_BRANCH ${GIT_BRANCH})
+
 # -----------------
 # - CTest Options -
 # -----------------
 set(CTEST_DASHBOARD_ROOT "$ENV{HOME}/build")
-set(CTEST_PROJECT_DIRECTORY "${PROJECT_NAME}-${GIT_BRANCH}")
+set(CTEST_PROJECT_DIRECTORY "${PROJECT_NAME}-${CLEANED_GIT_BRANCH}")
 set(CTEST_SOURCE_DIRECTORY "${CTEST_DASHBOARD_ROOT}/${CTEST_PROJECT_DIRECTORY}")
 set(CTEST_BINARY_DIRECTORY
   "${CTEST_DASHBOARD_ROOT}/${CTEST_PROJECT_DIRECTORY}-build")
