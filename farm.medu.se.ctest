@@ -51,10 +51,8 @@ else (WIN32)
   set(CTEST_CMAKE_GENERATOR "Visual Studio")
 endif ()
 set(CTEST_CONFIGURE_COMMAND
-  "${CMAKE_COMMAND} \"-D${CMAKE_C_COMPILER}=${COMPILER_NAME}\"")
-if (${CONFIGURE_COMMAND})
-  set(CTEST_CONFIGURE_COMMAND "${CMAKE_COMMAND} ${CONFIGURE_COMMAND}")
-endif()
+  "${CMAKE_COMMAND} \"-DCMAKE_C_COMPILER=${COMPILER_NAME}\"")
+set(CTEST_CONFIGURE_COMMAND "${CTEST_CONFIGURE_COMMAND} ${CONFIGURE_COMMAND}")
 set(CTEST_CONFIGURE_COMMAND "${CTEST_CONFIGURE_COMMAND} \"-G${CTEST_CMAKE_GENERATOR}\"")
 set(CTEST_CONFIGURE_COMMAND "${CTEST_CONFIGURE_COMMAND} \"${CTEST_SOURCE_DIRECTORY}\"")
 
@@ -85,7 +83,7 @@ message(" -- Start ${MODEL}-${CTEST_BUILD_NAME} --")
 ctest_start(${MODEL})
 
 # This line totally wipe out the build directory
-#ctest_empty_binary_directory(${CTEST_BINARY_DIRECTORY})
+ctest_empty_binary_directory(${CTEST_BINARY_DIRECTORY})
 
 message(" -- Update ${GIT_BRANCH} --")
 ctest_update()
