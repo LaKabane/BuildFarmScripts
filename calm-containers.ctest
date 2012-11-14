@@ -1,0 +1,27 @@
+# ================================
+# = calm-containers CTest script =
+# ================================
+
+# CDash
+set(MODEL "Experimental")
+set(PROJECT_NAME "calm-containers")
+
+# Github
+set(GITHUB_ACCOUNT "drepdash")
+set(GITHUB_PROJECT "${PROJECT_NAME}")
+
+# Host Options
+set(GIT_BRANCH "master")
+set(OS_NAME "")
+set(OS_VERSION "")
+set(ARCH_NAME "")
+
+# Compiler
+set(COMPILER_NAME "")
+set(COMPILER_VERSION "")
+
+# Tunning
+#set(OPTION_BUILD "-j16")
+#set(CONFIGURE_COMMAND "")
+
+include("farm.medu.se.ctest")
