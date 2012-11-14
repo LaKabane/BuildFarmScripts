@@ -1,0 +1,64 @@
+BuildFarmScripts
+================
+
+Scripts for farm.medu.se:
+
+* libtclt.ctest
+* libtuntap.ctest
+* tNETacle.ctest
+
+You have to edit these files to describe your system before using them.
+
+MODE
+-----
+
+Values might be either Nighlty, Continuous or Experimental.
+
+Nighly is reserved for build scheduled every day.
+Continuous is reserved for build after every commit.
+Experimental is for everything else.
+
+PROJECT_NAME
+------------
+
+Project name on CDash page.
+
+GITHUB_ACCOUNT
+--------------
+
+Define the account on which the project can be found.
+
+GITHUB_PROJECT
+--------------
+
+Project name on Github page, if different than PROJECT_NAME.
+
+GIT_BRANCH
+----------
+
+The branch to fetch.
+
+OS_{NAME,VERSION}
+-----------------
+
+Name and version of the operating system of the host.
+
+ARCH_NAME
+---------
+
+Name of the hardware architecture of the host.
+
+COMPILER_{NAME,VERSION}
+-----------------------
+
+Name and version of the C compiler.
+
+OPTION_BUILD
+------------
+
+Optional parameter for make
+
+CONFIGURE_COMMAND
+-----------------
+
+Optional parameter for cmake
