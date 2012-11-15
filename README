@@ -9,7 +9,7 @@ Scripts for farm.medu.se:
 
 You have to edit these files to describe your system before using them.
 
-MODE
+MODEL
 -----
 
 Values might be either Nighlty, Continuous or Experimental.
@@ -18,47 +18,58 @@ Nighly is reserved for build scheduled every day.
 Continuous is reserved for build after every commit.
 Experimental is for everything else.
 
+The default value is 'Experimental'.
+
 PROJECT_NAME
 ------------
 
 Project name on CDash page.
+This value is mandatory.
 
 GITHUB_ACCOUNT
 --------------
 
 Define the account on which the project can be found.
+This value is mandatory.
 
 GITHUB_PROJECT
 --------------
 
 Project name on Github page, if different than PROJECT_NAME.
+The default value is 'LaKabane'.
 
 GIT_BRANCH
 ----------
 
 The branch to fetch.
+The default value is 'master'.
 
 OS_{NAME,VERSION}
 -----------------
 
 Name and version of the operating system of the host.
+This value is mandatory.
 
 ARCH_NAME
 ---------
 
 Name of the hardware architecture of the host.
+This value is mandatory.
 
 COMPILER_{NAME,VERSION}
 -----------------------
 
 Name and version of the C compiler.
+These values are mandatory.
 
 OPTION_BUILD
 ------------
 
-Optional parameter for make
+Parameters for make.
+This value is optional.
 
 CONFIGURE_COMMAND
 -----------------
 
-Optional parameter for cmake
+Parameters for cmake.
+This value is optional.
