@@ -32,7 +32,7 @@ find_program(MAKE NAMES make)
 # Find git
 find_program(CTEST_GIT_COMMAND NAMES git)
 set(CTEST_CHECKOUT_COMMAND
-  "${CTEST_GIT_COMMAND} clone ${GITHUB} ${CTEST_PROJECT_DIRECTORY}")
+  "${CTEST_GIT_COMMAND} clone --branch ${GIT_BRANCH} ${GITHUB} ${CTEST_PROJECT_DIRECTORY}")
 set(CTEST_UPDATE_COMMAND "${CTEST_GIT_COMMAND}")
 
 # Find optional programs
@@ -80,7 +80,7 @@ set(CTEST_DROP_SITE_CDASH TRUE)
 if (NOT EXISTS "${CTEST_SOURCE_DIRECTORY}")
   message(" -- Clone ${GITHUB} branch ${GIT_BRANCH} --")
 else()
-  # Prevent CTest from fail the clone 
+  # Prevent CTest from failling here
   set(CTEST_CHECKOUT_COMMAND "true")
 endif()
 
