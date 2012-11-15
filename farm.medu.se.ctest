@@ -7,6 +7,37 @@
 # ------------
 # - Cleaning -
 # ------------
+if (NOT "${MODEL}")
+  set(MODEL "Experimental")
+endif()
+if (NOT "${PROJECT_NAME}")
+  message(FATAL_ERROR "Missing PROJECT_NAME")
+endif()
+if (NOT "${GITHUB_PROJECT}")
+  set(GITHUB_PROJECT "${PROJECT_NAME}")
+endif()
+if (NOT "${GITHUB_ACCOUNT}")
+  set(GITHUB_ACCOUNT "LaKabane")
+endif()
+if (NOT "${GIT_BRANCH}")
+  set(GIT_BRANCH "master")
+endif()
+if (NOT "${OS_NAME}")
+  message(FATAL_ERROR "Missing OS_NAME")
+endif()
+if (NOT "${OS_VERSION}")
+  message(FATAL_ERROR "Missing OS_VERSION")
+endif()
+if (NOT "${ARCH_NAME}")
+  message(FATAL_ERROR "Missing ARCH_NAME")
+endif()
+if (NOT "${COMPILER_NAME}")
+  message(FATAL_ERROR "Missing COMPILER_NAME")
+endif()
+if (NOT "${COMPILER_VERSION}")
+  message(FATAL_ERROR "Missing COMPILER_VERSION")
+endif()
+
 string(REPLACE "/" "_" CLEANED_GIT_BRANCH ${GIT_BRANCH})
 
 # -----------------
