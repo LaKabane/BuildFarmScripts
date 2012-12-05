@@ -1,0 +1,6 @@
+# Host description
+
+set(OS_NAME "")
+set(OS_VERSION "")
+set(ARCH_NAME "")
+

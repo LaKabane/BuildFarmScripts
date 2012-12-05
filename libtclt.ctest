@@ -9,12 +9,7 @@ set(PROJECT_NAME "libtclt")
 # Github
 set(GITHUB_ACCOUNT "LaKabane")
 set(GITHUB_PROJECT "${PROJECT_NAME}")
-
-# Host Options
 set(GIT_BRANCH "master")
-set(OS_NAME "")
-set(OS_VERSION "")
-set(ARCH_NAME "")
 
 # Compiler
 set(COMPILER_NAME "")
@@ -24,4 +19,5 @@ set(COMPILER_VERSION "")
 #set(OPTION_BUILD "-j16")
 #set(CONFIGURE_COMMAND "")
 
+include("host.ctest")
 include("farm.medu.se.ctest")
