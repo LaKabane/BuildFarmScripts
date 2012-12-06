@@ -17,7 +17,9 @@ set(COMPILER_VERSION "")
 
 # Tunning
 #set(OPTION_BUILD "-j16")
-#set(CONFIGURE_COMMAND "")
+set(CONFIGURE_COMMAND
+  "-DTUNTAP_INCLUDE_DIR=/home/$ENV{USER}/build/libtuntap-${GIT_BRANCH} -DTUNTAP_LIBRARY=/home/$ENV{USER}/build/libtuntap-${GIT_BRANCH}-build/lib/libtuntap.so"
+)
 
 include("host.ctest")
 include("farm.medu.se.ctest")
