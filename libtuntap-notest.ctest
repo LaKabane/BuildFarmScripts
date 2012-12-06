@@ -1,0 +1,160 @@
+# ==========================
+# = libtuntap CTest script =
+# ==========================
+
+# CDash
+set(MODEL "Experimental")
+set(PROJECT_NAME "libtuntap")
+
+# Github
+set(GITHUB_ACCOUNT "LaKabane")
+set(GITHUB_PROJECT "${PROJECT_NAME}")
+set(GIT_BRANCH "master")
+
+# Compiler
+set(COMPILER_NAME "")
+set(COMPILER_VERSION "")
+
+# Tunning
+#set(OPTION_BUILD "-j16")
+
+include("host.ctest")
+
+if ("${MODEL}" STREQUAL "")
+  set(MODEL "Experimental")
+endif()
+if ("${PROJECT_NAME}" STREQUAL "")
+  message(FATAL_ERROR "Missing PROJECT_NAME")
+endif()
+if ("${GITHUB_PROJECT}" STREQUAL "")
+  set(GITHUB_PROJECT "${PROJECT_NAME}")
+endif()
+if ("${GITHUB_ACCOUNT}" STREQUAL "")
+  set(GITHUB_ACCOUNT "LaKabane")
+endif()
+if ("${GIT_BRANCH}" STREQUAL "")
+  set(GIT_BRANCH "master")
+endif()
+if ("${OS_NAME}" STREQUAL "")
+  message(FATAL_ERROR "Missing OS_NAME")
+endif()
+if ("${OS_VERSION}" STREQUAL "")
+  message(FATAL_ERROR "Missing OS_VERSION")
+endif()
+if ("${ARCH_NAME}" STREQUAL "")
+  message(FATAL_ERROR "Missing ARCH_NAME")
+endif()
+if ("${COMPILER_NAME}" STREQUAL "")
+  message(FATAL_ERROR "Missing COMPILER_NAME")
+endif()
+if ("${COMPILER_VERSION}" STREQUAL "")
+  message(FATAL_ERROR "Missing COMPILER_VERSION")
+endif()
+
+string(REPLACE "/" "_" CLEANED_GIT_BRANCH ${GIT_BRANCH})
+
+# -----------------
+# - CTest Options -
+# -----------------
+set(CTEST_DASHBOARD_ROOT "$ENV{HOME}/build")
+set(CTEST_PROJECT_DIRECTORY "${PROJECT_NAME}-${CLEANED_GIT_BRANCH}")
+set(CTEST_SOURCE_DIRECTORY "${CTEST_DASHBOARD_ROOT}/${CTEST_PROJECT_DIRECTORY}")
+set(CTEST_BINARY_DIRECTORY
+  "${CTEST_DASHBOARD_ROOT}/${CTEST_PROJECT_DIRECTORY}-build")
+
+# --------------------------
+# - CTest Host Environment -
+# --------------------------
+set(${CMAKE_SYSTEM_NAME} True)
+
+# Craft GitHub URL
+set(GITHUB "git://github.com/${GITHUB_ACCOUNT}/${GITHUB_PROJECT}.git")
+
+# Find make XXX: This UNIXish
+find_program(MAKE NAMES make)
+
+# Find git
+find_program(CTEST_GIT_COMMAND NAMES git)
+set(CTEST_CHECKOUT_COMMAND
+  "${CTEST_GIT_COMMAND} clone --branch ${GIT_BRANCH} ${GITHUB} ${CTEST_PROJECT_DIRECTORY}")
+set(CTEST_UPDATE_COMMAND "${CTEST_GIT_COMMAND}")
+
+# Find optional programs
+if (Linux)
+  find_program(CTEST_COVERAGE_COMMAND NAMES gcov)
+  find_program(CTEST_MEMORYCHECK_COMMAND NAMES valgrind)
+endif(Linux)
+
+# Hostname
+find_program(HOSTNAME_CMD NAMES hostname)
+exec_program(${HOSTNAME_CMD} ARGS OUTPUT_VARIABLE HOSTNAME)
+set(CTEST_SITE "${HOSTNAME}")
+
+# Build name
+set(CTEST_BUILD_NAME "${OS_NAME}-${OS_VERSION}-${ARCH_NAME}-${COMPILER_NAME}-${COMPILER_VERSION}-${GIT_BRANCH}")
+
+# CMake generation
+if (UNIX)
+  set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
+else (WIN32)
+  set(CTEST_CMAKE_GENERATOR "Visual Studio")
+endif ()
+set(CTEST_CONFIGURE_COMMAND
+  "${CMAKE_COMMAND} \"-DCMAKE_C_COMPILER=${COMPILER_NAME}\"")
+set(CTEST_CONFIGURE_COMMAND "${CTEST_CONFIGURE_COMMAND} ${CONFIGURE_COMMAND}")
+set(CTEST_CONFIGURE_COMMAND "${CTEST_CONFIGURE_COMMAND} \"-G${CTEST_CMAKE_GENERATOR}\"")
+set(CTEST_CONFIGURE_COMMAND "${CTEST_CONFIGURE_COMMAND} \"${CTEST_SOURCE_DIRECTORY}\"")
+
+# make options
+set(CTEST_BUILD_COMMAND "${MAKE} ${OPTION_BUILD}")
+
+# -----------------
+# - CDash Options -
+# -----------------
+set(CTEST_PROJECT_NAME "${PROJECT_NAME}")
+set(CTEST_NIGHTLY_START_TIME "00:00:00 EST")
+set(CTEST_DROP_METHOD "http")
+set(CTEST_DROP_SITE "farm.medu.se")
+set(CTEST_DROP_LOCATION "/submit.php?project=${PROJECT_NAME}")
+set(CTEST_DROP_SITE_CDASH TRUE)
+
+# ---------------
+# - Ctest rules -
+# ---------------
+if (NOT EXISTS "${CTEST_SOURCE_DIRECTORY}")
+  message(" -- Clone ${GITHUB} branch ${GIT_BRANCH} --")
+else()
+  # Prevent CTest from failling here
+  set(CTEST_CHECKOUT_COMMAND "true")
+endif()
+
+message(" -- Start ${MODEL}-${CTEST_BUILD_NAME} --")
+ctest_start(${MODEL})
+
+# This line totally wipe out the build directory
+ctest_empty_binary_directory(${CTEST_BINARY_DIRECTORY})
+
+message(" -- Update ${GIT_BRANCH} --")
+ctest_update(RETURN_VALUE RET)
+if (${RET} EQUAL -1)
+  message(" -- Can't update --")
+endif()
+
+if (${RET} EQUAL 0)
+  message(" -- Configure --")
+  ctest_configure(RETURN_VALUE RET)
+  if (${RET} EQUAL -1)
+    message(" -- Can't configure --")
+  endif()
+endif()
+
+if (${RET} EQUAL 0)
+  message(" -- Build --")
+  ctest_build(RETURN_VALUE RET)
+  if (${RET} EQUAL -1)
+    message(" -- Can't build --")
+  endif()
+endif()
+
+message(" -- Done --")
+
